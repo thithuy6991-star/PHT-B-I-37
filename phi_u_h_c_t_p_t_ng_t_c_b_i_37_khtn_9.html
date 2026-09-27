@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Học Tập Tương Tác - Bài 37 KHTN 9</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for rendering LaTeX mathematical & biological symbols -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .header-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #2563eb 100%);
+        }
+        .drag-over {
+            border-color: #3b82f6 !important;
+            background-color: #eff6ff !important;
+            transform: scale(1.01);
+        }
+        .card-selected {
+            ring: 3px;
+            ring-color: #6366f1;
+            border-color: #4f46e5 !important;
+            background-color: #e0e7ff !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen pb-12">
+
+    <!-- TOP HEADER -->
+    <header class="header-gradient text-white shadow-lg py-8 px-4 mb-6 relative">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <span class="inline-block bg-white/20 text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-2 backdrop-blur-sm" id="header-meta">
+                    KHTN 9 - PHÂN MÔN SINH HỌC
+                </span>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="header-title">
+                    BÀI 37: CÁC QUY LUẬT DI TRUYỀN CỦA MENDEL
+                </h1>
+                <p class="text-blue-100 text-sm mt-1">Phiếu Học Tập Tương Tác Tự Động Chấm Điểm</p>
+            </div>
+            
+            <button onclick="openAdminModal()" class="bg-white/10 hover:bg-white/20 text-white font-medium px-4 py-2.5 rounded-xl border border-white/30 backdrop-blur-md transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow">
+                <i class="fa-solid fa-gear text-amber-300"></i>
+                <span>QUẢN TRỊ</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-5xl mx-auto px-4 w-full flex-grow space-y-6">
+
+        <!-- THÔNG TIN HỌC SINH -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-user text-indigo-500 mr-1"></i> Họ và tên học sinh:
+                    </label>
+                    <input type="text" id="student-name" placeholder="Nhập đầy đủ họ và tên..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-gray-800 font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-users text-indigo-500 mr-1"></i> Lớp:
+                    </label>
+                    <input type="text" id="student-class" placeholder="Ví dụ: 9A1" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-gray-800 font-medium">
+                </div>
+            </div>
+        </div>
+
+        <!-- MỤC TIÊU & HƯỚNG DẪN -->
+        <div class="bg-indigo-50/80 rounded-2xl p-5 border border-indigo-100 text-indigo-900">
+            <h3 class="font-bold text-lg mb-2 flex items-center gap-2 text-indigo-900">
+                <i class="fa-solid fa-bullseye text-indigo-600"></i> MỤC TIÊU & HƯỚNG DẪN THAO TÁC
+            </h3>
+            <ul class="text-sm space-y-1.5 list-disc list-inside text-indigo-800/90 pl-1">
+                <li>Hiểu và giải thích được kết quả thí nghiệm lai 1 cặp và 2 cặp tính trạng của Mendel.</li>
+                <li>Nắm vững định nghĩa phép lai phân tích, quy luật phân li và quy luật phân li độc lập.</li>
+                <li>Thao tác trực tiếp trên phiếu bằng cách chọn đáp án, nối cột, điền từ hoặc kéo thả hình ảnh/thẻ.</li>
+                <li>Sau khi hoàn thành tất cả các phần, bấm nút <strong class="text-indigo-950">"NỘP BÀI & CHẤM ĐIỂM"</strong> ở cuối trang để xem kết quả.</li>
+            </ul>
+        </div>
+
+        <!-- KHU VỰC 1: TRẮC NGHIỆM -->
+        <section id="section-mcq" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h2 class="text-lg font-bold text-blue-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">1</span>
+                    KHU VỰC 1: TRẮC NGHIỆM NHANH
+                </h2>
+                <span class="text-xs font-semibold bg-blue-50 text-blue-600 px-3 py-1 rounded-full border border-blue-200" id="badge-score-mcq">
+                    Điểm tối đa: 2.0 điểm
+                </span>
+            </div>
+
+            <div id="container-mcq" class="space-y-6">
+                <!-- MCQ items generated by JS -->
+            </div>
+        </section>
+
+        <!-- KHU VỰC 2: ĐIỀN KHUYẾT -->
+        <section id="section-fill" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">2</span>
+                    KHU VỰC 2: ĐIỀN KHUYẾT KIẾN THỨC
+                </h2>
+                <span class="text-xs font-semibold bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full border border-emerald-200" id="badge-score-fill">
+                    Điểm tối đa: 2.0 điểm
+                </span>
+            </div>
+
+            <div id="container-fill" class="space-y-4 text-gray-800 leading-relaxed">
+                <!-- Fill items generated by JS -->
+            </div>
+        </section>
+
+        <!-- KHU VỰC 3: ĐÚNG / SAI -->
+        <section id="section-tf" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h2 class="text-lg font-bold text-purple-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">3</span>
+                    KHU VỰC 3: XÁC ĐỊNH ĐÚNG / SAI
+                </h2>
+                <span class="text-xs font-semibold bg-purple-50 text-purple-600 px-3 py-1 rounded-full border border-purple-200" id="badge-score-tf">
+                    Điểm tối đa: 1.5 điểm
+                </span>
+            </div>
+
+            <div id="container-tf" class="space-y-4">
+                <!-- True/False items generated by JS -->
+            </div>
+        </section>
+
+        <!-- KHU VỰC 4: NỐI CỘT -->
+        <section id="section-match" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h2 class="text-lg font-bold text-amber-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">4</span>
+                    KHU VỰC 4: NỐI CỘT TƯƠNG ỨNG
+                </h2>
+                <span class="text-xs font-semibold bg-amber-50 text-amber-600 px-3 py-1 rounded-full border border-amber-200" id="badge-score-match">
+                    Điểm tối đa: 1.5 điểm
+                </span>
+            </div>
+
+            <div class="text-xs text-amber-800 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                <i class="fa-solid fa-circle-info mr-1"></i> Chọn cụm từ ở Cột A tương ứng ghép với khái niệm/kết quả ở Cột B.
+            </div>
+
+            <div id="container-match" class="space-y-3">
+                <!-- Matching items generated by JS -->
+            </div>
+        </section>
+
+        <!-- KHU VỰC 5: KÉO THẢ HÌNH ẢNH / THẺ SƠ ĐỒ -->
+        <section id="section-drag" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h2 class="text-lg font-bold text-rose-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm">5</span>
+                    KHU VỰC 5: KÉO THẢ / GHÉP THẺ SƠ ĐỒ
+                </h2>
+                <span class="text-xs font-semibold bg-rose-50 text-rose-600 px-3 py-1 rounded-full border border-rose-200" id="badge-score-drag">
+                    Điểm tối đa: 1.5 điểm
+                </span>
+            </div>
+
+            <div class="text-xs text-rose-800 bg-rose-50 p-3 rounded-xl border border-rose-200 flex items-center justify-between flex-wrap gap-2">
+                <span><i class="fa-solid fa-hand-pointer mr-1"></i> <strong>2 cách thao tác:</strong> (1) Kéo trực tiếp thẻ vào ô đáp án; hoặc (2) Bấm chọn thẻ $\rightarrow$ rồi bấm ô đáp án.</span>
+                <button onclick="resetDragSection()" class="text-xs text-rose-700 hover:text-rose-900 underline font-medium">Làm lại phần này</button>
+            </div>
+
+            <!-- SOURCE CARDS -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <p class="text-xs font-bold text-slate-500 uppercase mb-3">Danh sách thẻ / Hình ảnh cho sẵn:</p>
+                <div id="drag-sources" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <!-- Cards generated by JS -->
+                </div>
+            </div>
+
+            <!-- TARGET DROPZONES -->
+            <div class="space-y-3">
+                <p class="text-xs font-bold text-slate-500 uppercase">Khung thả đáp án Sơ đồ Lai Mendel:</p>
+                <div id="drag-targets" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dropzones generated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- KHU VỰC 6: XEM VIDEO + ĐIỀN KHUYẾT -->
+        <section id="section-video" class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+            <div class="flex justify-between items-center border-b pb-3 border-slate-100">
+                <h2 class="text-lg font-bold text-cyan-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold text-sm">6</span>
+                    KHU VỰC 6: XEM VIDEO & TRẢ LỜI CÂU HỎI
+                </h2>
+                <span class="text-xs font-semibold bg-cyan-50 text-cyan-600 px-3 py-1 rounded-full border border-cyan-200" id="badge-score-video">
+                    Điểm tối đa: 1.5 điểm
+                </span>
+            </div>
+
+            <!-- Ô NHẬP NHANH LINK VIDEO BÊN NGOÀI (YOUTUBE / DIRECT LINK) -->
+            <div class="bg-cyan-50/70 p-3.5 rounded-xl border border-cyan-200 text-xs text-cyan-950 flex flex-col md:flex-row justify-between items-center gap-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-brands fa-youtube text-red-600 text-lg"></i>
+                    <span><strong>Thêm/Đổi Video bài học từ bên ngoài:</strong> Dán link YouTube hoặc đường dẫn MP4 bên dưới:</span>
+                </div>
+                <div class="flex w-full md:w-auto gap-2">
+                    <input type="text" id="quick-video-url" placeholder="VD: https://www.youtube.com/watch?v=..." class="px-3 py-2 rounded-xl border border-cyan-300 text-xs text-slate-800 flex-1 md:w-80 outline-none focus:ring-2 focus:ring-cyan-500 bg-white">
+                    <button onclick="updateExternalVideo()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 active:bg-cyan-800 text-white font-bold rounded-xl text-xs shrink-0 transition flex items-center gap-1.5 shadow-xs">
+                        <i class="fa-solid fa-arrows-rotate"></i> Cập nhật
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Video Player (Tự động chuyển đổi giữa YouTube Embed và HTML5 Video) -->
+            <div id="video-container" class="bg-black/90 rounded-2xl overflow-hidden shadow-md max-w-2xl mx-auto border border-slate-700 aspect-video flex items-center justify-center">
+                <!-- Nội dung Video sẽ được chèn tự động qua JS -->
+            </div>
+
+            <!-- Video Questions -->
+            <div id="container-video-q" class="space-y-4 pt-2">
+                <!-- Video questions generated by JS -->
+            </div>
+        </section>
+
+        <!-- NÚT NỘP BÀI & BẢNG KẾT QUẢ -->
+        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 text-center space-y-4">
+            <button onclick="submitWorksheet()" id="btn-submit" class="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                <i class="fa-solid fa-paper-plane mr-2"></i> NỘP BÀI & CHẤM ĐIỂM
+            </button>
+
+            <!-- RESULT CARD (Hidden by default) -->
+            <div id="result-box" class="hidden p-6 rounded-2xl border-2 transition-all text-left space-y-3">
+                <div class="flex flex-col md:flex-row justify-between items-center border-b pb-3 border-gray-200 gap-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800" id="result-student-info">KẾT QUẢ BÀI LÀM</h3>
+                        <p class="text-xs text-slate-500" id="result-timestamp"></p>
+                    </div>
+                    <div class="text-center md:text-right bg-indigo-50 px-6 py-2.5 rounded-2xl border border-indigo-200">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider block">ĐIỂM CỦA EM</span>
+                        <span class="text-3xl font-black text-indigo-600" id="result-score-text">0.0 / 10.0</span>
+                    </div>
+                </div>
+
+                <div id="result-breakdown" class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs pt-2">
+                    <!-- Breakdown info -->
+                </div>
+            </div>
+        </div>
+
+        <!-- GHI NHỚ SIÊU NHANH -->
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200 shadow-sm space-y-3">
+            <h3 class="font-bold text-base text-amber-900 flex items-center gap-2">
+                <i class="fa-solid fa-lightbulb text-amber-500 text-xl"></i> GHI NHỚ SIÊU NHANH (TÓM TẮT BÀI HỌC)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs md:text-sm text-amber-950">
+                <div class="bg-white/80 p-3 rounded-xl border border-amber-200/60 shadow-2xs">
+                    <strong class="text-amber-800 font-bold block mb-1">1. Quy luật phân li:</strong>
+                    Mỗi tính trạng do 1 cặp allele quy định. Khi giảm phân tạo giao tử, các allele trong cặp phân li đồng đều về các giao tử.
+                </div>
+                <div class="bg-white/80 p-3 rounded-xl border border-amber-200/60 shadow-2xs">
+                    <strong class="text-amber-800 font-bold block mb-1">2. Phép lai phân tích:</strong>
+                    Lai giữa cơ thể mang tính trạng trội chưa biết kiểu gen với cơ thể mang tính trạng lặn. Nếu $F_1$ đồng tính $\rightarrow$ trội đồng hợp ($AA$); nếu $F_1$ phân tính $\rightarrow$ trội dị hợp ($Aa$).
+                </div>
+                <div class="bg-white/80 p-3 rounded-xl border border-amber-200/60 shadow-2xs">
+                    <strong class="text-amber-800 font-bold block mb-1">3. Quy luật phân li độc lập:</strong>
+                    Các cặp allele quy định các tính trạng khác nhau phân li độc lập với nhau trong quá trình hình thành giao tử.
+                </div>
+                <div class="bg-white/80 p-3 rounded-xl border border-amber-200/60 shadow-2xs">
+                    <strong class="text-amber-800 font-bold block mb-1">4. Tỉ lệ kiểu hình $F_2$ điển hình:</strong>
+                    - Lai 1 cặp tính trạng: 3 Trội : 1 Lặn.<br>
+                    - Lai 2 cặp tính trạng: 9 Vàng trơn : 3 Vàng nhăn : 3 Xanh trơn : 1 Xanh nhăn.
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center text-xs text-gray-500 mt-10">
+        <p>© Phiếu Học Tập Tương Tác KHTN 9 - Thiết kế tối ưu cho Giáo viên Việt Nam</p>
+    </footer>
+
+    <!-- MODAL QUẢN TRỊ GIÁO VIÊN -->
+    <div id="admin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="bg-slate-900 text-white p-4 px-6 flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-amber-400"></i> BẢNG QUẢN TRỊ CẤU HÌNH PHIẾU HỌC TẬP
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Password Form (If locked) -->
+            <div id="admin-auth" class="p-8 text-center space-y-4">
+                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h4 class="font-bold text-slate-800">Yêu cầu xác minh quyền Giáo viên</h4>
+                <p class="text-xs text-slate-500">Vui lòng nhập mật khẩu quản trị để chỉnh sửa cấu hình (Mặc định: 1230)</p>
+                <div class="max-w-xs mx-auto space-y-2">
+                    <input type="password" id="admin-pass" placeholder="Nhập mật khẩu..." class="w-full px-4 py-2 border rounded-xl text-center focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <button onclick="checkAdminPassword()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-sm">
+                        Xác nhận
+                    </button>
+                    <p id="auth-error" class="text-xs text-rose-500 hidden">Mật khẩu không chính xác!</p>
+                </div>
+            </div>
+
+            <!-- Main Admin Panel (Hidden until authenticated) -->
+            <div id="admin-panel" class="hidden flex-1 overflow-y-auto p-6 space-y-6 text-sm">
+
+                <!-- Dynamic Score Status Alert -->
+                <div id="score-validation-alert" class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex justify-between items-center">
+                    <span><i class="fa-solid fa-triangle-exclamation mr-1"></i> Tổng điểm cấu hình từng phần: <strong id="sum-section-scores">0</strong> / Tổng điểm bài: <strong id="target-total-score">10</strong></span>
+                    <span id="score-status-badge" class="font-bold px-2 py-0.5 rounded text-[10px]"></span>
+                </div>
+
+                <!-- 1. Cấu hình chung -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-indigo-900 border-b pb-1">1. Cấu hình chung Bài học & Điểm số</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Môn học / Phân môn</label>
+                            <input type="text" id="cfg-subject" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Khối lớp</label>
+                            <input type="text" id="cfg-grade" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tổng điểm toàn phiếu</label>
+                            <input type="number" step="0.5" min="1" id="cfg-total-score" onchange="validateScores()" class="w-full p-2 border rounded-lg font-bold text-indigo-600">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tên bài học</label>
+                        <input type="text" id="cfg-title" class="w-full p-2 border rounded-lg">
+                    </div>
+                </div>
+
+                <!-- 2. Cấu hình Bật/Tắt & Điểm số từng khu vực -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-indigo-900 border-b pb-1">2. Cấu hình Trạng thái & Điểm số các Khu vực</h4>
+                    <div class="space-y-2 text-xs">
+                        
+                        <!-- Row 1 -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                            <div class="col-span-5 font-semibold">1. Trắc nghiệm nhanh</div>
+                            <div class="col-span-3">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="cfg-active-mcq" class="sr-only peer">
+                                    <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                                    <span class="ml-2 text-[11px]">Bật</span>
+                                </label>
+                            </div>
+                            <div class="col-span-4 flex items-center gap-1">
+                                <span>Điểm:</span>
+                                <input type="number" step="0.25" min="0" id="cfg-score-mcq" onchange="validateScores()" class="w-16 p-1 border rounded text-center font-semibold">
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                            <div class="col-span-5 font-semibold">2. Điền khuyết</div>
+                            <div class="col-span-3">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="cfg-active-fill" class="sr-only peer">
+                                    <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                                    <span class="ml-2 text-[11px]">Bật</span>
+                                </label>
+                            </div>
+                            <div class="col-span-4 flex items-center gap-1">
+                                <span>Điểm:</span>
+                                <input type="number" step="0.25" min="0" id="cfg-score-fill" onchange="validateScores()" class="w-16 p-1 border rounded text-center font-semibold">
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                            <div class="col-span-5 font-semibold">3. Đúng / Sai</div>
+                            <div class="col-span-3">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="cfg-active-tf" class="sr-only peer">
+                                    <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                                    <span class="ml-2 text-[11px]">Bật</span>
+                                </label>
+                            </div>
+                            <div class="col-span-4 flex items-center gap-1">
+                                <span>Điểm:</span>
+                                <input type="number" step="0.25" min="0" id="cfg-score-tf" onchange="validateScores()" class="w-16 p-1 border rounded text-center font-semibold">
+                            </div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                            <div class="col-span-5 font-semibold">4. Nối cột</div>
+                            <div class="col-span-3">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="cfg-active-match" class="sr-only peer">
+                                    <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                                    <span class="ml-2 text-[11px]">Bật</span>
+                                </label>
+                            </div>
+                            <div class="col-span-4 flex items-center gap-1">
+                                <span>Điểm:</span>
+                                <input type="number" step="0.25" min="0" id="cfg-score-match" onchange="validateScores()" class="w-16 p-1 border rounded text-center font-semibold">
+                            </div>
+                        </div>
+
+                        <!-- Row 5 -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                            <div class="col-span-5 font-semibold">5. Kéo thả hình ảnh</div>
+                            <div class="col-span-3">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="cfg-active-drag" class="sr-only peer">
+                                    <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                                    <span class="ml-2 text-[11px]">Bật</span>
+                                </label>
+                            </div>
+                            <div class="col-span-4 flex items-center gap-1">
+                                <span>Điểm:</span>
+                                <input type="number" step="0.25" min="0" id="cfg-score-drag" onchange="validateScores()" class="w-16 p-1 border rounded text-center font-semibold">
+                            </div>
+                        </div>
+
+                        <!-- Row 6 -->
+                        <div class="grid grid-cols-12 gap-2 items-center bg-slate-50 p-2 rounded-lg">
+                            <div class="col-span-5 font-semibold">6. Video & Bài tập</div>
+                            <div class="col-span-3">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="cfg-active-video" class="sr-only peer">
+                                    <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-indigo-600 relative"></div>
+                                    <span class="ml-2 text-[11px]">Bật</span>
+                                </label>
+                            </div>
+                            <div class="col-span-4 flex items-center gap-1">
+                                <span>Điểm:</span>
+                                <input type="number" step="0.25" min="0" id="cfg-score-video" onchange="validateScores()" class="w-16 p-1 border rounded text-center font-semibold">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 3. Cấu hình Video -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-indigo-900 border-b pb-1">3. Cấu hình Nguồn Video Bài Học</h4>
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Đường dẫn Video URL (Hỗ trợ YouTube, MP4, WebM):</label>
+                            <input type="text" id="cfg-video-url" placeholder="https://www.youtube.com/watch?v=... hoặc https://domain.com/video.mp4" class="w-full p-2 border rounded-lg text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tải Video từ máy tính:</label>
+                            <input type="file" id="cfg-video-file" accept="video/*" onchange="handleVideoFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Cấu hình kết nối Google Sheets -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-indigo-900 border-b pb-1">4. Cấu hình Tự động gửi điểm vào Google Sheets</h4>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Đường dẫn Web App URL từ Google Apps Script:</label>
+                        <input type="text" id="cfg-script-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 border rounded-lg text-xs font-mono text-indigo-700">
+                        <p class="text-[11px] text-gray-500 mt-1">Dán URL Web App được cấp sau khi bấm **Triển khai (Deploy)** trong Google Apps Script.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div id="admin-footer" class="hidden bg-slate-100 p-4 border-t flex justify-between items-center">
+                <button onclick="resetDefaultConfig()" class="text-xs text-rose-600 hover:text-rose-800 underline font-semibold">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Khôi phục mặc định
+                </button>
+                <div class="flex gap-2">
+                    <button onclick="closeAdminModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-xl text-xs">Hủy</button>
+                    <button onclick="saveAdminConfig()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow">Lưu Cấu Hình</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DEFAULT WORKSHEET DATA & CONFIG
+        const DEFAULT_CONFIG = {
+            meta: {
+                subject: "KHTN 9 - SINH HỌC",
+                grade: "LỚP 9",
+                title: "BÀI 37: CÁC QUY LUẬT DI TRUYỀN CỦA MENDEL",
+                totalScore: 10.0
+            },
+            sections: {
+                mcq: { active: true, maxScore: 2.0 },
+                fill: { active: true, maxScore: 2.0 },
+                tf: { active: true, maxScore: 1.5 },
+                match: { active: true, maxScore: 1.5 },
+                drag: { active: true, maxScore: 1.5 },
+                video: { active: true, maxScore: 1.5 }
+            },
+            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            mcqData: [
+                {
+                    id: "mcq_1",
+                    question: "Phép lai nào sau đây được gọi là phép lai phân tích?",
+                    options: [
+                        "A. Lai giữa cơ thể có tính trạng trội chưa biết kiểu gen với cơ thể mang tính trạng lặn",
+                        "B. Lai giữa hai cơ thể cùng mang tính trạng lặn",
+                        "C. Lai giữa hai cơ thể mang tính trạng trội thuần chủng",
+                        "D. Lai giữa $F_1$ với nhau để thu được tỉ lệ $3:1$"
+                    ],
+                    answer: 0
+                },
+                {
+                    id: "mcq_2",
+                    question: "Trong thí nghiệm lai một cặp tính trạng của Mendel, khi cho các cây đậu $F_1$ hoa tím tự thụ phấn, tỉ lệ kiểu hình thu được ở $F_2$ là:",
+                    options: [
+                        "A. 100% hoa tím",
+                        "B. 1 hoa tím : 1 hoa trắng",
+                        "C. 3 hoa tím : 1 hoa trắng",
+                        "D. 9 hoa tím : 7 hoa trắng"
+                    ],
+                    answer: 2
+                },
+                {
+                    id: "mcq_3",
+                    question: "Theo quy luật phân li độc lập, cơ thể có kiểu gen $AaBb$ khi giảm phân bình thường sẽ tạo ra mấy loại giao tử với tỉ lệ như thế nào?",
+                    options: [
+                        "A. 2 loại giao tử với tỉ lệ $1 : 1$",
+                        "B. 4 loại giao tử với tỉ lệ $1 : 1 : 1 : 1$",
+                        "C. 4 loại giao tử với tỉ lệ $9 : 3 : 3 : 1$",
+                        "D. 3 loại giao tử với tỉ lệ $1 : 2 : 1$"
+                    ],
+                    answer: 1
+                },
+                {
+                    id: "mcq_4",
+                    question: "Kết quả thí nghiệm lai hai cặp tính trạng (Màu hạt & Dạng hạt) thuần chủng tương phản thu được ở $F_2$ tỉ lệ phân li kiểu hình là:",
+                    options: [
+                        "A. 3 vàng, trơn : 1 xanh, nhăn",
+                        "B. 9 vàng, trơn : 3 vàng, nhăn : 3 xanh, trơn : 1 xanh, nhăn",
+                        "C. 1 vàng, trơn : 1 vàng, nhăn : 1 xanh, trơn : 1 xanh, nhăn",
+                        "D. 9 xanh, trơn : 3 xanh, nhăn : 3 vàng, trơn : 1 vàng, nhăn"
+                    ],
+                    answer: 1
+                }
+            ],
+            fillData: [
+                {
+                    id: "fill_1",
+                    prefix: "1. Trong thí nghiệm của Mendel, tính trạng biểu hiện ở $F_1$ gọi là tính trạng ",
+                    options: ["trội", "lặn", "trung gian"],
+                    answer: "trội",
+                    suffix: ", còn tính trạng đến $F_2$ mới xuất hiện lại gọi là tính trạng lặn."
+                },
+                {
+                    id: "fill_2",
+                    prefix: "2. Quy luật phân li phát biểu: Trong quá trình hình thành ",
+                    options: ["hợp tử", "giao tử", "tế bào sinh dưỡng"],
+                    answer: "giao tử",
+                    suffix: ", mỗi thành viên của cặp allele phân li về các giao tử khác nhau."
+                },
+                {
+                    id: "fill_3",
+                    prefix: "3. Các cặp allele quy định các tính trạng khác nhau phân li ",
+                    options: ["phụ thuộc", "độc lập", "ngẫu nhiên"],
+                    answer: "độc lập",
+                    suffix: " với nhau trong quá trình hình thành giao tử."
+                }
+            ],
+            tfData: [
+                {
+                    id: "tf_1",
+                    statement: "Mendel đã sử dụng phương pháp phân tích các thế hệ lai trong nghiên cứu di truyền học.",
+                    answer: true
+                },
+                {
+                    id: "tf_2",
+                    statement: "Phép lai phân tích được dùng để xác định độ tuổi của sinh vật.",
+                    answer: false
+                },
+                {
+                    id: "tf_3",
+                    statement: "Cơ thể dị hợp $Aa$ khi giảm phân chỉ tạo ra 1 loại giao tử duy nhất mang allele $A$.",
+                    answer: false
+                },
+                {
+                    id: "tf_4",
+                    statement: "Đậu Hà Lan là đối tượng thuận lợi nhờ có khả năng tự thụ phấn nghiêm ngặt.",
+                    answer: true
+                }
+            ],
+            matchData: [
+                {
+                    id: "match_1",
+                    labelA: "1. Kiểu gen $AA$",
+                    optionsB: [
+                        "Đồng hợp lặn",
+                        "Dị hợp tử",
+                        "Đồng hợp trội",
+                        "Tỉ lệ 9:3:3:1"
+                    ],
+                    answer: "Đồng hợp trội"
+                },
+                {
+                    id: "match_2",
+                    labelA: "2. Kiểu gen $Aa$",
+                    optionsB: [
+                        "Đồng hợp lặn",
+                        "Dị hợp tử",
+                        "Đồng hợp trội",
+                        "Tỉ lệ 3:1"
+                    ],
+                    answer: "Dị hợp tử"
+                },
+                {
+                    id: "match_3",
+                    labelA: "3. Kiểu gen $aa$",
+                    optionsB: [
+                        "Đồng hợp lặn",
+                        "Dị hợp tử",
+                        "Đồng hợp trội",
+                        "Tỉ lệ 1:1"
+                    ],
+                    answer: "Đồng hợp lặn"
+                },
+                {
+                    id: "match_4",
+                    labelA: "4. Tỉ lệ kiểu hình $F_2$ lai 2 cặp",
+                    optionsB: [
+                        "1 vàng : 1 xanh",
+                        "3 trội : 1 lặn",
+                        "9 : 3 : 3 : 1",
+                        "100% trội"
+                    ],
+                    answer: "9 : 3 : 3 : 1"
+                }
+            ],
+            dragData: {
+                sources: [
+                    { id: "card_1", text: "Kiểu gen $P$: $AA \\times aa$" },
+                    { id: "card_2", text: "Giao tử $G_P$: $A$ và $a$" },
+                    { id: "card_3", text: "Kiểu gen $F_1$: $100\\% \\ Aa$" },
+                    { id: "card_4", text: "Tỉ lệ $F_2$: $3$ Trội : $1$ Lặn" }
+                ],
+                targets: [
+                    { id: "target_1", label: "Cặp bố mẹ $P$ thuần chủng:", correctId: "card_1" },
+                    { id: "target_2", label: "Loại giao tử do $P$ tạo ra:", correctId: "card_2" },
+                    { id: "target_3", label: "Tổ hợp kiểu gen ở $F_1$:", correctId: "card_3" },
+                    { id: "target_4", label: "Sự phân li kiểu hình ở $F_2$:", correctId: "card_4" }
+                ]
+            },
+            videoUrl: "https://www.youtube.com/embed/i5-3UuPYMdA?si=uU4T9axw2pQoFZcq",
+            videoQuestions: [
+                {
+                    id: "vq_1",
+                    question: "1. Mendel đã chọn đối tượng thí nghiệm chính nào cho các nghiên cứu quy luật di truyền?",
+                    options: ["Ruồi giấm", "Đậu Hà Lan", "Cây ngô", "Vi khuẩn E. coli"],
+                    answer: 1
+                },
+                {
+                    id: "vq_2",
+                    question: "2. Quy luật phân li giải thích sự phân li của cặp nhân tố di truyền ở giai đoạn nào?",
+                    options: ["Thụ tinh", "Giảm phân tạo giao tử", "Nguyên phân phát triển phôi", "Tự thụ phấn"],
+                    answer: 1
+                }
+            ],
+            scriptUrl: ""
+        };
+
+        // Application State
+        let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        let selectedDragCard = null;
+        let dragAssignments = {}; // targetId -> cardId
+        let isAdminAuthenticated = false;
+
+        window.onload = function() {
+            renderAllSections();
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        };
+
+        function renderAllSections() {
+            renderHeader();
+            renderMCQ();
+            renderFill();
+            renderTF();
+            renderMatch();
+            renderDrag();
+            renderVideo();
+            updateSectionVisibility();
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function renderHeader() {
+            document.getElementById('header-meta').innerText = `${config.meta.subject} - ${config.meta.grade}`;
+            document.getElementById('header-title').innerText = config.meta.title;
+            
+            document.getElementById('badge-score-mcq').innerText = `Điểm tối đa: ${config.sections.mcq.maxScore} điểm`;
+            document.getElementById('badge-score-fill').innerText = `Điểm tối đa: ${config.sections.fill.maxScore} điểm`;
+            document.getElementById('badge-score-tf').innerText = `Điểm tối đa: ${config.sections.tf.maxScore} điểm`;
+            document.getElementById('badge-score-match').innerText = `Điểm tối đa: ${config.sections.match.maxScore} điểm`;
+            document.getElementById('badge-score-drag').innerText = `Điểm tối đa: ${config.sections.drag.maxScore} điểm`;
+            document.getElementById('badge-score-video').innerText = `Điểm tối đa: ${config.sections.video.maxScore} điểm`;
+        }
+
+        function updateSectionVisibility() {
+            document.getElementById('section-mcq').style.display = config.sections.mcq.active ? 'block' : 'none';
+            document.getElementById('section-fill').style.display = config.sections.fill.active ? 'block' : 'none';
+            document.getElementById('section-tf').style.display = config.sections.tf.active ? 'block' : 'none';
+            document.getElementById('section-match').style.display = config.sections.match.active ? 'block' : 'none';
+            document.getElementById('section-drag').style.display = config.sections.drag.active ? 'block' : 'none';
+            document.getElementById('section-video').style.display = config.sections.video.active ? 'block' : 'none';
+        }
+
+        // 1. MCQ
+        function renderMCQ() {
+            const container = document.getElementById('container-mcq');
+            container.innerHTML = config.mcqData.map((item, idx) => `
+                <div class="space-y-3 p-4 rounded-xl bg-slate-50 border border-slate-100" id="mcq-box-${item.id}">
+                    <p class="font-bold text-slate-800 text-sm md:text-base">
+                        Câu ${idx + 1}: ${item.question}
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                        ${item.options.map((opt, optIdx) => `
+                            <label class="flex items-center p-3 rounded-xl border border-gray-200 bg-white hover:bg-blue-50/50 cursor-pointer transition">
+                                <input type="radio" name="${item.id}" value="${optIdx}" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2.5 text-slate-700 font-medium">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 2. FILL
+        function renderFill() {
+            const container = document.getElementById('container-fill');
+            container.innerHTML = config.fillData.map((item) => `
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-sm md:text-base leading-relaxed" id="fill-box-${item.id}">
+                    <span>${item.prefix}</span>
+                    <select id="select-${item.id}" class="mx-1 px-3 py-1.5 rounded-lg border border-emerald-300 bg-white font-bold text-emerald-800 focus:ring-2 focus:ring-emerald-500 outline-none shadow-xs">
+                        <option value="">-- chọn --</option>
+                        ${item.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                    </select>
+                    <span>${item.suffix}</span>
+                </div>
+            `).join('');
+        }
+
+        // 3. TRUE / FALSE
+        function renderTF() {
+            const container = document.getElementById('container-tf');
+            container.innerHTML = config.tfData.map((item, idx) => `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 gap-3 text-sm md:text-base" id="tf-box-${item.id}">
+                    <span class="font-medium text-slate-800">${idx + 1}. ${item.statement}</span>
+                    <div class="flex gap-4 shrink-0">
+                        <label class="flex items-center px-4 py-2 rounded-xl bg-white border border-gray-200 cursor-pointer hover:bg-purple-50">
+                            <input type="radio" name="${item.id}" value="true" class="w-4 h-4 text-purple-600">
+                            <span class="ml-2 font-bold text-emerald-600">ĐÚNG</span>
+                        </label>
+                        <label class="flex items-center px-4 py-2 rounded-xl bg-white border border-gray-200 cursor-pointer hover:bg-purple-50">
+                            <input type="radio" name="${item.id}" value="false" class="w-4 h-4 text-purple-600">
+                            <span class="ml-2 font-bold text-rose-600">SAI</span>
+                        </label>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 4. MATCHING
+        function renderMatch() {
+            const container = document.getElementById('container-match');
+            container.innerHTML = config.matchData.map((item) => `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 rounded-xl bg-amber-50/40 border border-amber-100 items-center text-sm" id="match-box-${item.id}">
+                    <div class="font-bold text-amber-950">${item.labelA}</div>
+                    <div>
+                        <select id="match-select-${item.id}" class="w-full p-2 rounded-xl border border-amber-300 bg-white font-medium text-slate-800 focus:ring-2 focus:ring-amber-500 outline-none">
+                            <option value="">-- Chọn khái niệm tương ứng ở Cột B --</option>
+                            ${item.optionsB.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 5. DRAG & DROP / CLICK MATCH
+        function renderDrag() {
+            const sourcesContainer = document.getElementById('drag-sources');
+            const targetsContainer = document.getElementById('drag-targets');
+
+            sourcesContainer.innerHTML = config.dragData.sources.map(card => {
+                const isAssigned = Object.values(dragAssignments).includes(card.id);
+                return `
+                    <div id="${card.id}" 
+                         draggable="${!isAssigned}" 
+                         ondragstart="handleDragStart(event, '${card.id}')"
+                         onclick="handleCardClick('${card.id}')"
+                         class="p-3 bg-white rounded-xl border-2 ${isAssigned ? 'opacity-40 border-gray-200 cursor-not-allowed' : 'border-indigo-200 hover:border-indigo-400 cursor-grab active:cursor-grabbing'} shadow-2xs text-xs font-semibold text-center transition-all flex items-center justify-center min-h-[50px]">
+                        ${card.text}
+                    </div>
+                `;
+            }).join('');
+
+            targetsContainer.innerHTML = config.dragData.targets.map(target => {
+                const assignedCardId = dragAssignments[target.id];
+                const assignedCard = config.dragData.sources.find(c => c.id === assignedCardId);
+
+                return `
+                    <div class="p-4 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300 transition-all flex flex-col justify-between"
+                         id="target-box-${target.id}"
+                         ondragover="handleDragOver(event)"
+                         ondragleave="handleDragLeave(event)"
+                         ondrop="handleDrop(event, '${target.id}')"
+                         onclick="handleTargetClick('${target.id}')">
+                        <span class="text-xs font-bold text-slate-600 mb-2">${target.label}</span>
+                        <div class="min-h-[44px] rounded-lg border border-slate-200 bg-white flex items-center justify-center p-2 text-xs font-semibold text-indigo-900 shadow-2xs">
+                            ${assignedCard ? `
+                                <div class="flex justify-between items-center w-full">
+                                    <span>${assignedCard.text}</span>
+                                    <button onclick="event.stopPropagation(); unassignCard('${target.id}')" class="text-rose-500 hover:text-rose-700 ml-2 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50">✕</button>
+                                </div>
+                            ` : '<span class="text-gray-400 font-normal italic">Kéo hoặc bấm chọn thẻ đặt vào đây</span>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function handleDragStart(e, cardId) {
+            if (Object.values(dragAssignments).includes(cardId)) return;
+            e.dataTransfer.setData('text/plain', cardId);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e, targetId) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            const cardId = e.dataTransfer.getData('text/plain');
+            if (cardId) {
+                assignCard(targetId, cardId);
+            }
+        }
+
+        function handleCardClick(cardId) {
+            if (Object.values(dragAssignments).includes(cardId)) return;
+            if (selectedDragCard === cardId) {
+                selectedDragCard = null;
+            } else {
+                selectedDragCard = cardId;
+            }
+            highlightSelectedCard();
+        }
+
+        function handleTargetClick(targetId) {
+            if (selectedDragCard) {
+                assignCard(targetId, selectedDragCard);
+                selectedDragCard = null;
+                highlightSelectedCard();
+            }
+        }
+
+        function highlightSelectedCard() {
+            config.dragData.sources.forEach(c => {
+                const el = document.getElementById(c.id);
+                if (el) {
+                    if (c.id === selectedDragCard) {
+                        el.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+                    } else {
+                        el.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+                    }
+                }
+            });
+        }
+
+        function assignCard(targetId, cardId) {
+            // Remove previous assignment of this target or card
+            dragAssignments[targetId] = cardId;
+            renderDrag();
+            if (window.MathJax) MathJax.typesetPromise();
+        }
+
+        function unassignCard(targetId) {
+            delete dragAssignments[targetId];
+            renderDrag();
+            if (window.MathJax) MathJax.typesetPromise();
+        }
+
+        function resetDragSection() {
+            dragAssignments = {};
+            selectedDragCard = null;
+            renderDrag();
+            if (window.MathJax) MathJax.typesetPromise();
+        }
+
+        // 6. VIDEO
+        function parseVideoSource(url) {
+            if (!url) return { type: 'none' };
+            
+            // Xử lý nếu người dùng dán toàn bộ thẻ <iframe ... src="..." ...>
+            if (url.includes('<iframe') && url.includes('src=')) {
+                const srcMatch = url.match(/src=["']([^"']+)["']/);
+                if (srcMatch && srcMatch[1]) {
+                    url = srcMatch[1];
+                }
+            }
+
+            // Xử lý link YouTube (dạng URL thường, shortlink, hoặc embed)
+            const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const ytMatch = url.match(ytRegex);
+            
+            if (ytMatch && ytMatch[1]) {
+                return {
+                    type: 'youtube',
+                    embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0`
+                };
+            }
+
+            // Mặc định hỗ trợ file mp4 / blob / webm
+            return {
+                type: 'direct',
+                url: url
+            };
+        }
+
+        function renderVideo() {
+            const container = document.getElementById('video-container');
+            const sourceInfo = parseVideoSource(config.videoUrl);
+
+            if (sourceInfo.type === 'youtube') {
+                container.innerHTML = `
+                    <iframe src="${sourceInfo.embedUrl}" 
+                            class="w-full h-full border-0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>`;
+            } else if (sourceInfo.type === 'direct' && sourceInfo.url) {
+                container.innerHTML = `
+                    <video id="video-player" controls class="w-full h-full bg-black">
+                        <source id="video-source" src="${sourceInfo.url}" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ phát video HTML5.
+                    </video>`;
+            } else {
+                container.innerHTML = `
+                    <div class="text-slate-400 text-xs flex flex-col items-center gap-2">
+                        <i class="fa-solid fa-video-slash text-2xl"></i>
+                        <span>Chưa có nguồn video. Vui lòng dán liên kết video bên trên.</span>
+                    </div>`;
+            }
+
+            // Cập nhật ô nhập nhanh link video
+            const quickInput = document.getElementById('quick-video-url');
+            if (quickInput) {
+                quickInput.value = config.videoUrl || '';
+            }
+
+            const qContainer = document.getElementById('container-video-q');
+            qContainer.innerHTML = config.videoQuestions.map((q) => `
+                <div class="space-y-3 p-4 rounded-xl bg-slate-50 border border-slate-100" id="vq-box-${q.id}">
+                    <p class="font-bold text-slate-800 text-sm md:text-base">${q.question}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                        ${q.options.map((opt, optIdx) => `
+                            <label class="flex items-center p-3 rounded-xl border border-gray-200 bg-white hover:bg-cyan-50/50 cursor-pointer transition">
+                                <input type="radio" name="${q.id}" value="${optIdx}" class="w-4 h-4 text-cyan-600">
+                                <span class="ml-2.5 text-slate-700 font-medium">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateExternalVideo() {
+            const input = document.getElementById('quick-video-url');
+            const url = input ? input.value.trim() : '';
+            if (!url) {
+                showToast("Vui lòng dán liên kết video YouTube hoặc MP4!");
+                return;
+            }
+            config.videoUrl = url;
+            renderVideo();
+            showToast("Đã cập nhật video bài học thành công!");
+        }
+
+        // SUBMIT & AUTO-GRADING LOGIC
+        function submitWorksheet() {
+            const name = document.getElementById('student-name').value.trim();
+            const studentClass = document.getElementById('student-class').value.trim();
+
+            if (!name || !studentClass) {
+                showToast("Vui lòng điền đầy đủ Họ tên và Lớp trước khi nộp bài!");
+                return;
+            }
+
+            let achievedRawScore = 0;
+            let activeMaxScoreSum = 0;
+
+            let totalQuestions = 0;
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unansweredCount = 0;
+
+            const breakdown = [];
+
+            // 1. MCQ Grading
+            if (config.sections.mcq.active) {
+                let secCorrect = 0;
+                config.mcqData.forEach(q => {
+                    totalQuestions++;
+                    const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+                    if (!selected) {
+                        unansweredCount++;
+                    } else if (parseInt(selected.value) === q.answer) {
+                        secCorrect++;
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+
+                    const box = document.getElementById(`mcq-box-${q.id}`);
+                    if (box) {
+                        const isCorrect = selected && parseInt(selected.value) === q.answer;
+                        box.className = `space-y-3 p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50/60 border-emerald-300' : 'bg-rose-50/60 border-rose-300'}`;
+                    }
+                });
+                const secScore = (secCorrect / config.mcqData.length) * config.sections.mcq.maxScore;
+                achievedRawScore += secScore;
+                activeMaxScoreSum += config.sections.mcq.maxScore;
+                breakdown.push({ name: "1. Trắc nghiệm", score: secScore, max: config.sections.mcq.maxScore });
+            }
+
+            // 2. FILL Grading
+            if (config.sections.fill.active) {
+                let secCorrect = 0;
+                config.fillData.forEach(item => {
+                    totalQuestions++;
+                    const sel = document.getElementById(`select-${item.id}`);
+                    const val = sel ? sel.value : "";
+                    if (!val) {
+                        unansweredCount++;
+                    } else if (val === item.answer) {
+                        secCorrect++;
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+
+                    const box = document.getElementById(`fill-box-${item.id}`);
+                    if (box) {
+                        const isCorrect = val === item.answer;
+                        box.className = `p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50/60 border-emerald-300' : 'bg-rose-50/60 border-rose-300'}`;
+                    }
+                });
+                const secScore = (secCorrect / config.fillData.length) * config.sections.fill.maxScore;
+                achievedRawScore += secScore;
+                activeMaxScoreSum += config.sections.fill.maxScore;
+                breakdown.push({ name: "2. Điền khuyết", score: secScore, max: config.sections.fill.maxScore });
+            }
+
+            // 3. TF Grading
+            if (config.sections.tf.active) {
+                let secCorrect = 0;
+                config.tfData.forEach(item => {
+                    totalQuestions++;
+                    const sel = document.querySelector(`input[name="${item.id}"]:checked`);
+                    if (!sel) {
+                        unansweredCount++;
+                    } else if ((sel.value === "true") === item.answer) {
+                        secCorrect++;
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+
+                    const box = document.getElementById(`tf-box-${item.id}`);
+                    if (box) {
+                        const val = sel ? sel.value === "true" : null;
+                        const isCorrect = val === item.answer;
+                        box.className = `flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border gap-3 ${isCorrect ? 'bg-emerald-50/60 border-emerald-300' : 'bg-rose-50/60 border-rose-300'}`;
+                    }
+                });
+                const secScore = (secCorrect / config.tfData.length) * config.sections.tf.maxScore;
+                achievedRawScore += secScore;
+                activeMaxScoreSum += config.sections.tf.maxScore;
+                breakdown.push({ name: "3. Đúng / Sai", score: secScore, max: config.sections.tf.maxScore });
+            }
+
+            // 4. MATCH Grading
+            if (config.sections.match.active) {
+                let secCorrect = 0;
+                config.matchData.forEach(item => {
+                    totalQuestions++;
+                    const sel = document.getElementById(`match-select-${item.id}`);
+                    const val = sel ? sel.value : "";
+                    if (!val) {
+                        unansweredCount++;
+                    } else if (val === item.answer) {
+                        secCorrect++;
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+
+                    const box = document.getElementById(`match-box-${item.id}`);
+                    if (box) {
+                        const isCorrect = val === item.answer;
+                        box.className = `grid grid-cols-1 md:grid-cols-2 gap-3 p-3 rounded-xl border items-center text-sm ${isCorrect ? 'bg-emerald-50/60 border-emerald-300' : 'bg-rose-50/60 border-rose-300'}`;
+                    }
+                });
+                const secScore = (secCorrect / config.matchData.length) * config.sections.match.maxScore;
+                achievedRawScore += secScore;
+                activeMaxScoreSum += config.sections.match.maxScore;
+                breakdown.push({ name: "4. Nối cột", score: secScore, max: config.sections.match.maxScore });
+            }
+
+            // 5. DRAG Grading
+            if (config.sections.drag.active) {
+                let secCorrect = 0;
+                config.dragData.targets.forEach(target => {
+                    totalQuestions++;
+                    const assignedCardId = dragAssignments[target.id];
+                    if (!assignedCardId) {
+                        unansweredCount++;
+                    } else if (assignedCardId === target.correctId) {
+                        secCorrect++;
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+
+                    const box = document.getElementById(`target-box-${target.id}`);
+                    if (box) {
+                        const isCorrect = assignedCardId === target.correctId;
+                        box.className = `p-4 rounded-xl border-2 transition-all flex flex-col justify-between ${isCorrect ? 'bg-emerald-50/60 border-emerald-400' : 'bg-rose-50/60 border-rose-400'}`;
+                    }
+                });
+                const secScore = (secCorrect / config.dragData.targets.length) * config.sections.drag.maxScore;
+                achievedRawScore += secScore;
+                activeMaxScoreSum += config.sections.drag.maxScore;
+                breakdown.push({ name: "5. Ghép sơ đồ", score: secScore, max: config.sections.drag.maxScore });
+            }
+
+            // 6. VIDEO Grading
+            if (config.sections.video.active) {
+                let secCorrect = 0;
+                config.videoQuestions.forEach(q => {
+                    totalQuestions++;
+                    const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+                    if (!selected) {
+                        unansweredCount++;
+                    } else if (parseInt(selected.value) === q.answer) {
+                        secCorrect++;
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+
+                    const box = document.getElementById(`vq-box-${q.id}`);
+                    if (box) {
+                        const isCorrect = selected && parseInt(selected.value) === q.answer;
+                        box.className = `space-y-3 p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50/60 border-emerald-300' : 'bg-rose-50/60 border-rose-300'}`;
+                    }
+                });
+                const secScore = (secCorrect / config.videoQuestions.length) * config.sections.video.maxScore;
+                achievedRawScore += secScore;
+                activeMaxScoreSum += config.sections.video.maxScore;
+                breakdown.push({ name: "6. Bài tập Video", score: secScore, max: config.sections.video.maxScore });
+            }
+
+            // Calculate scaled score
+            const scaledScore = activeMaxScoreSum > 0 
+                ? (achievedRawScore / activeMaxScoreSum) * config.meta.totalScore 
+                : 0;
+            const finalScore = parseFloat(scaledScore.toFixed(1));
+            const submissionTime = new Date().toLocaleString('vi-VN');
+
+            // Gửi dữ liệu về Google Sheets qua Apps Script nếu URL đã được cài đặt
+            if (config.scriptUrl) {
+                showToast("Đang tự động gửi kết quả về Google Sheets...");
+                fetch(config.scriptUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        fullName: name,
+                        className: studentClass,
+                        score: finalScore,
+                        correctCount: correctCount,
+                        incorrectCount: incorrectCount,
+                        unansweredCount: unansweredCount,
+                        totalQuestions: totalQuestions,
+                        timestamp: submissionTime
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast("Đã lưu kết quả thành công vào Google Sheets!");
+                    } else {
+                        showToast("Có lỗi khi lưu dữ liệu: " + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.log("Đã gửi dữ liệu bài làm thành công.");
+                    showToast("Đã gửi bài làm về Google Sheets!");
+                });
+            }
+
+            // DISPLAY RESULT CARD
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.remove('hidden');
+            resultBox.className = `p-6 rounded-2xl border-2 transition-all text-left space-y-3 ${scaledScore >= (config.meta.totalScore * 0.5) ? 'bg-emerald-50/40 border-emerald-300' : 'bg-amber-50/40 border-amber-300'}`;
+
+            document.getElementById('result-student-info').innerText = `KẾT QUẢ BÀI LÀM: ${name.toUpperCase()} - LỚP ${studentClass.toUpperCase()}`;
+            document.getElementById('result-timestamp').innerText = `Hoàn thành lúc: ${new Date().toLocaleString('vi-VN')}`;
+            document.getElementById('result-score-text').innerText = `${scaledScore.toFixed(1)} / ${config.meta.totalScore.toFixed(1)}`;
+
+            const breakdownBox = document.getElementById('result-breakdown');
+            breakdownBox.innerHTML = breakdown.map(item => `
+                <div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-2xs flex justify-between items-center">
+                    <span class="font-medium text-slate-700">${item.name}:</span>
+                    <span class="font-bold ${item.score === item.max ? 'text-emerald-600' : 'text-indigo-600'}">${item.score.toFixed(1)} / ${item.max.toFixed(1)} đ</span>
+                </div>
+            `).join('');
+
+            // Scroll to results smooth
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // ADMIN MODAL & CONFIG MANAGEMENT
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            if (!isAdminAuthenticated) {
+                document.getElementById('admin-auth').classList.remove('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
+                document.getElementById('admin-footer').classList.add('hidden');
+            } else {
+                loadConfigToAdminForm();
+            }
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+            document.getElementById('auth-error').classList.add('hidden');
+        }
+
+        function checkAdminPassword() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === "1230") {
+                isAdminAuthenticated = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                document.getElementById('admin-footer').classList.remove('hidden');
+                loadConfigToAdminForm();
+            } else {
+                document.getElementById('auth-error').classList.remove('hidden');
+            }
+        }
+
+        function loadConfigToAdminForm() {
+            document.getElementById('cfg-subject').value = config.meta.subject;
+            document.getElementById('cfg-grade').value = config.meta.grade;
+            document.getElementById('cfg-title').value = config.meta.title;
+            document.getElementById('cfg-total-score').value = config.meta.totalScore;
+
+            // Sections
+            document.getElementById('cfg-active-mcq').checked = config.sections.mcq.active;
+            document.getElementById('cfg-score-mcq').value = config.sections.mcq.maxScore;
+
+            document.getElementById('cfg-active-fill').checked = config.sections.fill.active;
+            document.getElementById('cfg-score-fill').value = config.sections.fill.maxScore;
+
+            document.getElementById('cfg-active-tf').checked = config.sections.tf.active;
+            document.getElementById('cfg-score-tf').value = config.sections.tf.maxScore;
+
+            document.getElementById('cfg-active-match').checked = config.sections.match.active;
+            document.getElementById('cfg-score-match').value = config.sections.match.maxScore;
+
+            document.getElementById('cfg-active-drag').checked = config.sections.drag.active;
+            document.getElementById('cfg-score-drag').value = config.sections.drag.maxScore;
+
+            document.getElementById('cfg-active-video').checked = config.sections.video.active;
+            document.getElementById('cfg-score-video').value = config.sections.video.maxScore;
+
+            document.getElementById('cfg-video-url').value = config.videoUrl || '';
+            document.getElementById('cfg-script-url').value = config.scriptUrl || '';
+
+            validateScores();
+        }
+
+        function saveAdminConfig() {
+            config.meta.subject = document.getElementById('cfg-subject').value.trim();
+            config.meta.grade = document.getElementById('cfg-grade').value.trim();
+            config.meta.title = document.getElementById('cfg-title').value.trim();
+            config.meta.totalScore = parseFloat(document.getElementById('cfg-total-score').value) || 10.0;
+
+            config.sections.mcq.active = document.getElementById('cfg-active-mcq').checked;
+            config.sections.mcq.maxScore = parseFloat(document.getElementById('cfg-score-mcq').value) || 0;
+
+            config.sections.fill.active = document.getElementById('cfg-active-fill').checked;
+            config.sections.fill.maxScore = parseFloat(document.getElementById('cfg-score-fill').value) || 0;
+
+            config.sections.tf.active = document.getElementById('cfg-active-tf').checked;
+            config.sections.tf.maxScore = parseFloat(document.getElementById('cfg-score-tf').value) || 0;
+
+            config.sections.match.active = document.getElementById('cfg-active-match').checked;
+            config.sections.match.maxScore = parseFloat(document.getElementById('cfg-score-match').value) || 0;
+
+            config.sections.drag.active = document.getElementById('cfg-active-drag').checked;
+            config.sections.drag.maxScore = parseFloat(document.getElementById('cfg-score-drag').value) || 0;
+
+            config.sections.video.active = document.getElementById('cfg-active-video').checked;
+            config.sections.video.maxScore = parseFloat(document.getElementById('cfg-score-video').value) || 0;
+
+            const newUrl = document.getElementById('cfg-video-url').value.trim();
+            if (newUrl) {
+                config.videoUrl = newUrl;
+            }
+
+            config.scriptUrl = document.getElementById('cfg-script-url').value.trim();
+
+            renderAllSections();
+            closeAdminModal();
+            showToast("Đã lưu và cập nhật cấu hình thành công!");
+        }
+
+        function validateScores() {
+            const totalTarget = parseFloat(document.getElementById('cfg-total-score').value) || 10;
+            
+            let sum = 0;
+            if (document.getElementById('cfg-active-mcq').checked) sum += parseFloat(document.getElementById('cfg-score-mcq').value) || 0;
+            if (document.getElementById('cfg-active-fill').checked) sum += parseFloat(document.getElementById('cfg-score-fill').value) || 0;
+            if (document.getElementById('cfg-active-tf').checked) sum += parseFloat(document.getElementById('cfg-score-tf').value) || 0;
+            if (document.getElementById('cfg-active-match').checked) sum += parseFloat(document.getElementById('cfg-score-match').value) || 0;
+            if (document.getElementById('cfg-active-drag').checked) sum += parseFloat(document.getElementById('cfg-score-drag').value) || 0;
+            if (document.getElementById('cfg-active-video').checked) sum += parseFloat(document.getElementById('cfg-score-video').value) || 0;
+
+            document.getElementById('sum-section-scores').innerText = sum.toFixed(2);
+            document.getElementById('target-total-score').innerText = totalTarget.toFixed(2);
+
+            const badge = document.getElementById('score-status-badge');
+            if (Math.abs(sum - totalTarget) < 0.01) {
+                badge.className = "font-bold px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800";
+                badge.innerText = "ĐỐI SÁÁT HOÀN HẢO";
+            } else {
+                badge.className = "font-bold px-2 py-0.5 rounded text-[10px] bg-rose-100 text-rose-800";
+                badge.innerText = "CHƯA KHỚP TỔNG ĐIỂM";
+            }
+        }
+
+        function saveAdminConfig() {
+            config.meta.subject = document.getElementById('cfg-subject').value.trim();
+            config.meta.grade = document.getElementById('cfg-grade').value.trim();
+            config.meta.title = document.getElementById('cfg-title').value.trim();
+            config.meta.totalScore = parseFloat(document.getElementById('cfg-total-score').value) || 10.0;
+
+            config.sections.mcq.active = document.getElementById('cfg-active-mcq').checked;
+            config.sections.mcq.maxScore = parseFloat(document.getElementById('cfg-score-mcq').value) || 0;
+
+            config.sections.fill.active = document.getElementById('cfg-active-fill').checked;
+            config.sections.fill.maxScore = parseFloat(document.getElementById('cfg-score-fill').value) || 0;
+
+            config.sections.tf.active = document.getElementById('cfg-active-tf').checked;
+            config.sections.tf.maxScore = parseFloat(document.getElementById('cfg-score-tf').value) || 0;
+
+            config.sections.match.active = document.getElementById('cfg-active-match').checked;
+            config.sections.match.maxScore = parseFloat(document.getElementById('cfg-score-match').value) || 0;
+
+            config.sections.drag.active = document.getElementById('cfg-active-drag').checked;
+            config.sections.drag.maxScore = parseFloat(document.getElementById('cfg-score-drag').value) || 0;
+
+            config.sections.video.active = document.getElementById('cfg-active-video').checked;
+            config.sections.video.maxScore = parseFloat(document.getElementById('cfg-score-video').value) || 0;
+
+            const newUrl = document.getElementById('cfg-video-url').value.trim();
+            if (newUrl) {
+                config.videoUrl = newUrl;
+            }
+
+            renderAllSections();
+            closeAdminModal();
+            showToast("Đã lưu và cập nhật cấu hình phiếu học tập thành công!");
+        }
+
+        function resetDefaultConfig() {
+            config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+            loadConfigToAdminForm();
+            renderAllSections();
+            showToast("Đã khôi phục cài đặt mặc định thành công!");
+        }
+
+        function handleVideoFileUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const objectUrl = URL.createObjectURL(file);
+                config.videoUrl = objectUrl;
+                document.getElementById('cfg-video-url').value = file.name;
+            }
+        }
+
+        // Custom Toast Message Handler
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl z-50 text-xs md:text-sm font-medium border border-slate-700 animate-bounce";
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-amber-400 mr-2"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
